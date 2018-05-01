@@ -1,0 +1,19 @@
+{
+  "name": "server-mon",
+  "version": "1.0.0",
+  "description": "The server monitor application will monitor servers and potentially alert on them.",
+  "main": "app.js",
+  "dependencies": {
+    "tcpie": "^4.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://coderepo.anaren.com/it/server-mon.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
