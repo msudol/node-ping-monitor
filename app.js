@@ -1,5 +1,5 @@
 var tcpie = require('tcpie');
-var pie = tcpie('johnson.anaren.com', 10000, {count: 4, interval: 500, timeout: 2000});
+var pie = tcpie('site.example.com', 80, {count: 4, interval: 500, timeout: 2000});
  
 pie.on('connect', function(stats) {
   console.info('connect', stats);
