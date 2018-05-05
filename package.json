@@ -4,7 +4,9 @@
   "description": "The server monitor application will monitor servers and potentially alert on them.",
   "main": "app.js",
   "dependencies": {
-    "tcpie": "^4.0.1"
+    "npm": "^6.0.0",
+    "tcpie": "^4.0.1",
+    "node-cron": "^1.2.1"
   },
   "devDependencies": {},
   "scripts": {

@@ -8,7 +8,7 @@ var tcpie = require('tcpie');
 class Ping{
      
     // our constructor function fires on new Ping(etc)
-	constructor(address, port, count, interval, timeout) {
+	constructor(address, port, count, interval, timeout, start) {
         var self = this;
 		this.address = address;
 		this.port = port;
@@ -34,6 +34,10 @@ class Ping{
         }).on('end', function(stats) { 
             self.end(stats)
         });  
+        
+        if (start) {
+            this.init();
+        }
         
 	}
 
@@ -71,7 +75,8 @@ class Ping{
         }
         
         console.info('finished: ' + stats.target.host + ':' + stats.target.port + ' success=' + stats.success + ' failed=' + stats.failed +  ' avg=' + this.rttAvg );
-    }   
+    }
+    
 }
 	
-module.exports = Ping
+module.exports = Ping;
