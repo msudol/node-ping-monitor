@@ -1,24 +1,40 @@
 // app.js
 "use strict";
 
-//db = {};
-//db.targets = new Datastore('db/targets.db', autoload: true);
+var Datastore = require('nedb');
+var db = {};
+db.targets = new Datastore({filename: 'db/targets.db', autoload: true});
 
 var Ping = require('./ping.js');
 var Runner = require('./runner.js');
  
- 
-// setup a targets array of objects - this will go into nedb at some point.     
+ // setup a targets array of objects - this will go into nedb at some point.     
 var targets = [
-    {host:'google.com', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true},
-    {host:'yahoo.com', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true},
-    {host:'derp.derp', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true},
+    {host:'google.com', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true, runs: []},
+    {host:'yahoo.com', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true, runs: []},
+    {host:'derp.derp', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true, runs: []},
 ];
 
 // a function to build a target
 var setupTarget = function(t) {
+    
+    // coming soon - nedb storage of results
+    db.targets.find({host: targets[t].host}, function(err, docs) {
+        console.log(docs.length);
+    });
+    
+    // setup the ping 
+    targets[t].ping = new Ping(targets[t]);
+    
+    // setup the runner
     targets[t].runner = new Runner(targets[t].cron, function() {    
-        targets[t].ping = new Ping(targets[t].host, targets[t].port, targets[t].count, targets[t].interval, targets[t].timeout, targets[t].autostart);   
+        
+        // fire the ping on the runner timer
+        //targets[t].ping.init();  - doesn't work?
+        
+        // have to create new instance of tcpie for now.
+        targets[t].ping = new Ping(targets[t]);
+                
     });
 };
 

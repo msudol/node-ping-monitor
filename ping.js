@@ -8,21 +8,26 @@ var tcpie = require('tcpie');
 class Ping{
      
     // our constructor function fires on new Ping(etc)
-	constructor(address, port, count, interval, timeout, start) {
+    //(targets[t].host, targets[t].port, targets[t].count, targets[t].interval, targets[t].timeout, targets[t].autostart, targets[t].runs)
+	constructor(target) {
         var self = this;
-		this.address = address;
-		this.port = port;
+        this.target = target;
+		this.host = target.host;
+		this.port = target.port;
         this.settings = {
-            count: count,
-            interval: interval,
-            timeout: timeout
+            count: target.count,
+            interval: target.interval,
+            timeout: target.timeout
         };
         // maintain array of round trip times
         this.rttArray = [];
         this.rttAvg = null;
+        this.stats = {};
+        this.runs = target.runs;
+        this.autostart = target.autostart;
         
         // create an instance of tcpie for this ping
-        this.pie = tcpie(this.address, this.port, this.settings);
+        this.pie = tcpie(this.host, this.port, this.settings);
         
         // setup event handlers
         this.pie.on('connect', function(stats) {         
@@ -35,7 +40,7 @@ class Ping{
             self.end(stats)
         });  
         
-        if (start) {
+        if (this.autostart) {
             this.init();
         }
         
@@ -43,6 +48,7 @@ class Ping{
 
     // init function runs start.
     init() {
+        console.log("starting");
         this.pie.start();
     }
     
@@ -74,7 +80,22 @@ class Ping{
             });
         }
         
+        this.stats = stats;
+        
         console.info('finished: ' + stats.target.host + ':' + stats.target.port + ' success=' + stats.success + ' failed=' + stats.failed +  ' avg=' + this.rttAvg );
+        
+        this.complete();
+    }
+    
+    
+    // tally up some stats, return to the runner - should add the timestamp, prep for database storage and the like.
+    complete() {
+        
+        this.runs.push(this.stats);
+        this.target.runs = this.runs;
+        console.log(this.stats.target.host + " completed ping - total runs: " + this.runs.length);
+        
+        
     }
     
 }
