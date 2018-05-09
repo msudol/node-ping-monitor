@@ -40,6 +40,8 @@ class Ping{
             self.end(stats)
         });  
         
+        
+        // we should probably assume autostart at this point
         if (this.autostart) {
             this.init();
         }
@@ -69,6 +71,8 @@ class Ping{
     // function called when event ends
     end(stats) {
         
+        var self = this;
+        
         if (this.rttArray.length > 0) {
             this.rttAvg = this.rttArray.reduce((total, amount, index, array) => {
                 total += amount;
@@ -82,20 +86,16 @@ class Ping{
         
         this.stats = stats;
         
+        // log with the ping avr rtt
         console.info('finished: ' + stats.target.host + ':' + stats.target.port + ' success=' + stats.success + ' failed=' + stats.failed +  ' avg=' + this.rttAvg );
         
+        // call complete which can be used as an additional end function
         this.complete();
     }
     
-    
-    // tally up some stats, return to the runner - should add the timestamp, prep for database storage and the like.
+    // empty function to use as a prototype if needed
     complete() {
-        
-        this.runs.push(this.stats);
-        this.target.runs = this.runs;
-        console.log(this.stats.target.host + " completed ping - total runs: " + this.runs.length);
-        
-        
+       
     }
     
 }

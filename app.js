@@ -13,7 +13,8 @@ db.hosts.ensureIndex({ fieldName: 'host', unique: true }, function (err) {
 var Ping = require('./ping.js');
 var Runner = require('./runner.js');
  
- // setup a targets array of objects - this will go into nedb at some point.     
+ // setup a targets array of objects - this will go into nedb at some point. 
+ // For now autostart is always true, we may kill that - because we should just assume it     
 var targets = [
     {host:'google.com', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true, runs: []},
     {host:'yahoo.com', port: 80, count: 4, interval: 500, timeout: 2000, cron: '* * * * *', autostart: true, runs: []},
@@ -44,7 +45,8 @@ var setupTarget = function(t) {
             setupPing(docs[0]);
             
         }
-        // something else
+        // something else, could be more than 1 document
+        //TODO: definitely need better error handling around this
         else {
             console.log("Something went wrong looking for document for: " + targets[t].host);
             
@@ -54,11 +56,23 @@ var setupTarget = function(t) {
     
 };
 
+// function to call when ping is complete
+var donePing = function(p) {
+    p.ping.runs.push(p.ping.stats);
+    p.ping.target.runs = p.ping.runs;
+    console.log(p.ping.host + " completed ping - total runs: " + p.ping.runs.length);    
+};
+
 // running the ping setup
 var setupPing = function(p) {
  
-    // setup the ping 
+    // setup the ping and run 
     p.ping = new Ping(p);
+    
+    // use the complete function to get data back
+    p.ping.complete = function() {
+        donePing(p);
+    }
     
     // setup the runner
     p.runner = new Runner(p.cron, function() {    
@@ -68,6 +82,11 @@ var setupPing = function(p) {
         
         // have to create new instance of tcpie for now.
         p.ping = new Ping(p);
+
+        // use the complete function to get data back
+        p.ping.complete = function() {
+            donePing(p);
+        }
                 
     }); 
 }
@@ -78,34 +97,3 @@ for (var t = 0; t < targets.length; t++) {
 }
 
 
-
-
-
-/*
-
-old
-
-// Testing a runner - send cron syntax for node-cron
-var r1 = new Runner('* * * * *', function() {
-    // host, port, count, interval, timeout, autostart
-    var p1 = new Ping('google.com', 80, 4, 500, 2000, true);
-    
-});
-
-
-// autostart with true at the end
-var p2 = new Ping('yahoo.com', 80, 4, 500, 2000, true);
-// overriding a Ping class function
-p2.connect = function(stats) {
-    console.info('YAHOO: ' + stats.target.host + ':' + stats.target.port + ' seq=' + stats.sent + ' time=' + stats.rtt );
-    // push time into the array
-    p2.rttArray.push(stats.rtt);        
-}
-   
-   
-// manually start
-var p3 = new Ping('derp.derp', 80, 4, 500, 2000);
-p3.init();
-
-
-*/
