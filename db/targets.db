@@ -1,4 +1,4 @@
-{"host":"google.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"W0ugsE5GhRsfowfc"}
-{"host":"yahoo.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"k0sHVyuzns4bN2Xj"}
-{"host":"derp.derp","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"zz4n1T6uv0BVqXCE"}
 {"$$indexCreated":{"fieldName":"host","unique":true,"sparse":false}}
+{"host":"google.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"VoggrIwRBzsbkLYy"}
+{"host":"yahoo.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"nIXIHvaTFKk07v9Z"}
+{"host":"derp.derp","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"KzsDS6ax6VuCMjzt"}

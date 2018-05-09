@@ -5,7 +5,7 @@
 var tcpie = require('tcpie');
 
 // create a ping class
-class Ping{
+class Ping {
      
     // our constructor function fires on new Ping(etc)
     //(targets[t].host, targets[t].port, targets[t].count, targets[t].interval, targets[t].timeout, targets[t].autostart, targets[t].runs)
