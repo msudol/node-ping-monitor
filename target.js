@@ -16,41 +16,64 @@ class Target {
         
         this.target = target;
         this.db = db;
+        this.displayName = target.host + "-" + target.port;
         
-        // coming soon - nedb storage of results
-        this.db.hosts.find({host: this.target.host}, function(err, docs) {
+        // nedb storage 
+        this.db.hosts.find({host: this.target.host, port: this.target.port}, function(err, docs) {
             
-            // no docs
+            // get a unique ish name from host-port combo
+            var displayName = self.displayName;
+            
+            // create a new document for this host to store ping runs and stats
+            self.db[self.displayName] = new Datastore({filename: 'db/' + self.displayName + '.db', autoload: true});
+            
+            // no docs were found
             if (docs.length == 0) {
-                console.log("No NEDB document found for: " + self.target.host + " - creating one!");
+                console.log("No NEDB document found for: " + self.displayName);
                 self.db.hosts.insert(self.target, function (err, newDoc) {   
-                    // Callback is optional
-                    // newDoc is the newly inserted document
                     self.setupPing(newDoc);
-                });
-                
-                self.db[self.target.host] = new Datastore({filename: 'db/'+self.target.host+'.db', autoload: true});
-                
+                });     
             }
+            
             // found 1 doc, which is all we want
             else if (docs.length == 1) {
-                console.log("NEDB document found for: " + self.target.host);
+                console.log("NEDB document found for: " + self.displayName);
                 self.setupPing(docs[0]);   
             }
+            
             // something else, could be more than 1 document
             //TODO: definitely need better error handling around this
             else {
-                console.log("Something went wrong looking for document for: " + self.target.host);   
+                console.log("Something went wrong looking for document for: " + self.displayName);   
             }
+            
         });
     
     }
 
     // done ping
     donePing(p) {
-        p.ping.runs.push(p.ping.stats);
-        p.ping.target.runs = p.ping.runs;
-        console.log(p.ping.host + " completed ping - total runs: " + p.ping.runs.length);    
+        
+        // build better stats
+        var newStats = {};
+
+        newStats.ts = Date.now();
+        newStats.name = this.displayName;
+        newStats.host = this.target.host;
+        newStats.port = this.target.port;
+        newStats.sent = this.ping.stats.sent;
+        newStats.sucess = this.ping.stats.success;
+        newStats.failed = this.ping.stats.failed;
+        newStats.rttAvg = this.ping.rttAvg;
+
+        // push stats to nedb
+        this.target.runs.push(newStats);
+        
+        this.db[this.displayName].insert(newStats, function(err, newDoc) {
+            
+        });
+        
+        console.log(this.displayName + " completed runner - total current runs: " + this.target.runs.length);    
     }
     
 
@@ -58,26 +81,18 @@ class Target {
     setupPing(p) {
      
         var self = this;
-        
-        // setup the ping and run 
-        p.ping = new Ping(p);
-        
-        // use the complete function to get data back
-        p.ping.complete = function() {
-            self.donePing(p);
-        }
-        
+                
         // setup the runner
-        p.runner = new Runner(p.cron, function() {    
+        this.runner = new Runner(p.cron, function() {    
             
             // fire the ping on the runner timer
             //targets[t].ping.init();  - doesn't work?
             
             // have to create new instance of tcpie for now.
-            p.ping = new Ping(p);
+            self.ping = new Ping(p);
 
             // use the complete function to get data back
-            p.ping.complete = function() {
+            self.ping.complete = function() {
                 self.donePing(p);
             }
                     

@@ -8,26 +8,24 @@ var tcpie = require('tcpie');
 class Ping {
      
     // our constructor function fires on new Ping(etc)
-    //(targets[t].host, targets[t].port, targets[t].count, targets[t].interval, targets[t].timeout, targets[t].autostart, targets[t].runs)
+    //(target.host, target.port, target.count, target.interval, targets.timeout, targets.autostart, targets.runs)
 	constructor(target) {
         var self = this;
         this.target = target;
-		this.host = target.host;
-		this.port = target.port;
         this.settings = {
             count: target.count,
             interval: target.interval,
             timeout: target.timeout
         };
         // maintain array of round trip times
+        this.stats = {};
         this.rttArray = [];
         this.rttAvg = null;
-        this.stats = {};
         this.runs = target.runs;
         this.autostart = target.autostart;
         
         // create an instance of tcpie for this ping
-        this.pie = tcpie(this.host, this.port, this.settings);
+        this.pie = tcpie(this.target.host, this.target.port, this.settings);
         
         // setup event handlers
         this.pie.on('connect', function(stats) {         
@@ -50,18 +48,19 @@ class Ping {
 
     // init function runs start.
     init() {
-        console.log("starting");
+        // useless log - console.log("starting");
         this.pie.start();
     }
     
     connect(stats) {
-        console.info('connected to: ' + stats.target.host + ':' + stats.target.port + ' seq=' + stats.sent + ' time=' + stats.rtt );
+        console.info('Success connection to: ' + stats.target.host + ':' + stats.target.port + ' seq=' + stats.sent + ' time=' + stats.rtt );
         // push time into the array
         this.rttArray.push(stats.rtt);        
     }
     
     error(err, stats) {
-        console.error(err, stats);
+        //console.error(err, stats);
+        console.info('Failed connection to: ' + stats.target.host + ':' + stats.target.port + ' seq=' + stats.sent + ' time=' + stats.rtt );
     }
     
     timeout(stats) {
@@ -73,6 +72,8 @@ class Ping {
         
         var self = this;
         
+        this.stats = stats;
+        
         if (this.rttArray.length > 0) {
             this.rttAvg = this.rttArray.reduce((total, amount, index, array) => {
                 total += amount;
@@ -83,9 +84,7 @@ class Ping {
                 }
             });
         }
-        
-        this.stats = stats;
-        
+                
         // log with the ping avr rtt
         console.info('finished: ' + stats.target.host + ':' + stats.target.port + ' success=' + stats.success + ' failed=' + stats.failed +  ' avg=' + this.rttAvg );
         

@@ -26,8 +26,9 @@ var targets = [
 // loop through targets and set them up
 for (var t = 0; t < targets.length; t++) { 
     
-    // should I do tar[t] = new?  implications?
-    var tar = new Target(targets[t], db);
+    // should i assign a new object to a variable here? 
+    //https://stackoverflow.com/questions/2594415/is-it-bad-practice-to-not-assign-a-new-object-to-a-variable?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+    new Target(targets[t], db);
     
 }
 
