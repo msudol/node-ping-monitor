@@ -1,5 +1,7 @@
-{"ts":1525898581625,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":52.371719,"_id":"nY0BfeqS3QLKAoA4"}
 {"ts":1525898642025,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":54.290491499999995,"_id":"FbXFK5uAwPGocVsy"}
+{"ts":1525898822048,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":49.530799,"_id":"It1JzL0aprUU6ODW"}
 {"ts":1525898702285,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":51.350645,"_id":"V8EL0RNoRlqnAPS6"}
 {"ts":1525898761705,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":53.828709749999994,"_id":"cL2eG1QDfCVYTKnb"}
-{"ts":1525898822048,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":49.530799,"_id":"It1JzL0aprUU6ODW"}
+{"ts":1525898581625,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":52.371719,"_id":"nY0BfeqS3QLKAoA4"}
+{"ts":1525974782314,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":54.182786,"_id":"u1QTzsq6AR1Z3b9T"}
+{"ts":1525974841623,"name":"google.com-80","host":"google.com","port":80,"sent":4,"sucess":4,"failed":0,"rttAvg":52.30111125,"_id":"0WGGzg25Zt1h1CT5"}

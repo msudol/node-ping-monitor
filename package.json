@@ -1,22 +1,16 @@
 {
-  "name": "server-mon",
+  "name": "node-ping-monitor",
   "version": "1.0.0",
   "description": "The server monitor application will monitor servers and potentially alert on them.",
   "main": "app.js",
   "dependencies": {
     "nedb": "^1.8.0",
     "node-cron": "^1.2.1",
-    "npm": "^6.0.0",
     "tcpie": "^4.0.1"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://coderepo.anaren.com/it/server-mon.git"
-  },
-  "author": "",
-  "license": "ISC"
+  "author": "Matt Sudol"
 }

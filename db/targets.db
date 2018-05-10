@@ -1,4 +1,4 @@
-{"$$indexCreated":{"fieldName":"host","unique":true,"sparse":false}}
-{"host":"google.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"FJ6OqAMQ6As7vh6I"}
 {"host":"yahoo.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"5daqEJTPu7rDxmGM"}
+{"host":"google.com","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"FJ6OqAMQ6As7vh6I"}
 {"host":"derp.derp","port":80,"count":4,"interval":500,"timeout":2000,"cron":"* * * * *","autostart":true,"runs":[],"_id":"TplewgJGLKUrRD8S"}
+{"$$indexCreated":{"fieldName":"host","unique":true,"sparse":false}}
